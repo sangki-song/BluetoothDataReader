@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BluetoothDataReader</string>
+    <string name="연결">연결</string>
+</resources>
