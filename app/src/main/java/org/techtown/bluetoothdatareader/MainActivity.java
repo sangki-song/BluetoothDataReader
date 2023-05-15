@@ -1,10 +1,14 @@
 package org.techtown.bluetoothdatareader;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,9 +34,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        final int REQUEST_BLUETOOTH_CONNECT_PERMISSION = 1;
         ScrollView scrollView = findViewById(R.id.scroll);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.BLUETOOTH_CONNECT },
+                    REQUEST_BLUETOOTH_CONNECT_PERMISSION);
+        }
 
         scrollView.post(new Runnable() {
             @Override
@@ -104,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStart() {
         super.onStart();
+
         if (!bt.isBluetoothEnabled()) { //
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT); //오류 아님
